@@ -14,5 +14,9 @@ inline u8 inb(u16 port){
 	((((u64)offset) & 0x00000000ffff0000) << (48 - 16))	\
 	|((((u64)flags) & 0x000000000000ffff) << 32)		\
 	|(((selecter) & 0x000000000000ffff) << 16)	\
-	|(((u32)offset) & 0x000000000000ffff)
+	|(((u64)offset) & 0x000000000000ffff)
+struct gdt_ptr {
+u16 len;
+u32 ptr;
+} __attribute__((packed));
 #endif//_ASM_H_

@@ -3,7 +3,11 @@
 
 void putc_k(char c){
 	static unsigned short* index = (unsigned short*)VIDEO_BUFF_BASE;
-	*(index++) = 0x0c00 | c;
+	if(c == '\n')
+		//index = ((((unsigned int)(index) - VIDEO_BUFF_BASE) / 160) + 1) * 160 + VIDEO_BUFF_BASE;
+		index +=80;
+	else
+		*(index++) = 0x0c00 | c;
 	if(index >= (unsigned short*)VIDEO_BUFF_END)
 		index = (unsigned short*)VIDEO_BUFF_BASE;
 }
@@ -11,6 +15,7 @@ void putc_k(char c){
 void puts_k(char* str){
 	while(*str)
 		putc_k(*str++);
+	putc_k('\n');
 }
 
 void ltox(unsigned int value,char* str){
@@ -26,7 +31,7 @@ void ltox(unsigned int value,char* str){
 }
 
 void putl_k(int value){
-	char buff[10];
+	char buff[12];
 	ltox(value,buff);
 	puts_k(buff);
 }
