@@ -10,10 +10,8 @@ SECTIONS
 			*(.text)
 	}
 	.data		: { *(.data*) }
-	.bss		:
-	{
-		__bss_start = .;
-		*(.bss)
-		__bss_end = .;
+	.bss		: { *(.bss) }
+	.stack		: {
+		_stack_buttun_ = (. + 4096);
 	}
 }

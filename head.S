@@ -2,8 +2,7 @@
 	.section .head
 	.globl	_start
 _start:
-	movl	$__bss_end, %esp
-	addl	$0x1000,%esp
+	movl	$_stack_buttun_, %esp
 	movl	$kernel, %eax
 	pushl	%eax
 	ret

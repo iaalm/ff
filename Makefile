@@ -10,7 +10,7 @@ tools/header_linker:tools/header_linker.c
 kernel.bin:kernel
 	$(OBJCOPY) -O binary $< $@
 
-kernel.o:print.h asm.h
+kernel.o:kernel.c print.h asm.h
 
 kernel:head.o kernel.o print.o
 	$(LD) $^ -T head.ld -o $@ 

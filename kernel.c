@@ -41,7 +41,7 @@ void setup_idt(){
 	for(i = 0;i < 256;i++)
 		idt[i] = entry;
 
-	struct gdt_ptr ptr= {256 * 8,idt};
+	struct gdt_ptr ptr= {sizeof(idt),idt};
 	asm volatile("lidtl %0"::"m"(ptr));
 }
 void kernel(){
