@@ -32,16 +32,12 @@ extern void p();
 void setup_idt(){
 	u32 i;
 	asm volatile("movl %%cs,%0":"=r"(i));
-	putl_k(i);
-	putl_k(p);
 	u64 entry = IDT_ENTRY(0x8e00,i,(u32)p);
-	putl_k(entry & 0xffffffff);
-	putl_k(entry >> 32);
 
 	for(i = 0;i < 256;i++)
 		idt[i] = entry;
 
-	struct gdt_ptr ptr= {sizeof(idt),idt};
+	struct gdt_ptr ptr = {sizeof(idt),(u32)idt};
 	asm volatile("lidtl %0"::"m"(ptr));
 }
 void kernel(){

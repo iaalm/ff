@@ -8,9 +8,14 @@ _start:
 	ret
 	.globl	p
 p:
-	mov	$0x0c,%ah
+	mov	0xb83e8,%ax
+	add	$1,%ah
 	mov	$'!',%al
 	mov	%ax,0xb83e8
+	# send EOI
+	mov	$0x20,%al
+	out	%al,$0x20
+
 	iret
 
 
