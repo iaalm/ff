@@ -26,6 +26,7 @@ void init_8259A(){
 	iodelay();
 	outb(0xa1,0xff);
 	iodelay();
+	asm volatile ("sti");
 }
 extern void p();
 void setup_idt(){
@@ -42,12 +43,10 @@ void setup_idt(){
 
 	struct gdt_ptr ptr= {256 * 8,idt};
 	asm volatile("lidtl %0"::"m"(ptr));
-
-
 }
 void kernel(){
-	//init_8259A();
 	setup_idt();
-	asm volatile("int $0x80");
+	init_8259A();
+	//asm volatile("int $0xff");
 	while(1);
 }
