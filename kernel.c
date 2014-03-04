@@ -1,5 +1,6 @@
 #include "asm.h"
 #include "print.h"
+#include "ctype.h"
 u64 idt[256];
 inline void iodelay(){
 	asm volatile ("nop\nnop\nnop\nnop\nnop");
@@ -26,13 +27,12 @@ void init_8259A(){
 	iodelay();
 	outb(0xa1,0xff);
 	iodelay();
-	asm volatile ("sti");
+	sti();
 }
 extern void p();
 void setup_idt(){
 	u32 i;
-	asm volatile("movl %%cs,%0":"=r"(i));
-	u64 entry = IDT_ENTRY(0x8e00,i,(u32)p);
+	u64 entry = IDT_ENTRY(0x8e00,cs(),(u32)p);
 
 	for(i = 0;i < 256;i++)
 		idt[i] = entry;
@@ -40,9 +40,31 @@ void setup_idt(){
 	struct gdt_ptr ptr = {sizeof(idt),(u32)idt};
 	asm volatile("lidtl %0"::"m"(ptr));
 }
+/*
+void get_and_print_memory_inf(){
+	u32 mem_info[200],*len;
+	asm volatile(	"mov $0xeb20,%%ax\n"
+			"mov $0,%%ebx\n"
+			//"mov %0,%%di\n"
+			"mov $20,%%ecx\n"
+			"mov $0x534d4150,%%edx\n"
+			"loop:\n"
+			"int $0x15\n"
+			"add $20,%%edi\n"
+			"mov $0xeb20,%%ax\n"
+			"cmp $0,%%ebx\n"
+			"jne loop\n"
+			"mov di,%0"
+			://"=r"(mem_info)
+			:"r"(len)
+			:"%eax","%ebx","%ecx","%edx","memory");
+	putl_k(len-mem_info);
+}
+*/
 void kernel(){
 	setup_idt();
 	init_8259A();
+	//putl_k((u32)boot_params_p);
 	//asm volatile("int $0xff");
 	while(1);
 }

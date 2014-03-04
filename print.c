@@ -3,11 +3,17 @@
 
 void putc_k(char c){
 	static unsigned short* index = (unsigned short*)VIDEO_BUFF_BASE;
-	if(c == '\n')
-		//index = ((((unsigned int)(index) - VIDEO_BUFF_BASE) / 160) + 1) * 160 + VIDEO_BUFF_BASE;
-		index +=80;
-	else
-		*(index++) = 0x0c00 | c;
+	switch(c){
+		case'\n':
+			index = (unsigned short* )(((((unsigned int)(index) - VIDEO_BUFF_BASE) / 160) + 1) * 160 + VIDEO_BUFF_BASE);
+			break;
+		case'\r':
+			index = (unsigned short* )((((unsigned int)(index) - VIDEO_BUFF_BASE) / 160) * 160 + VIDEO_BUFF_BASE);
+			break;
+		default:
+			*(index++) = 0x0c00 | c;
+			break;
+	}
 	if(index >= (unsigned short*)VIDEO_BUFF_END)
 		index = (unsigned short*)VIDEO_BUFF_BASE;
 }

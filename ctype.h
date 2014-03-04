@@ -8,4 +8,6 @@ typedef unsigned int u32;
 typedef int s32;
 typedef unsigned long long u64;
 typedef long long s64;
+struct boot_params;
+extern struct boot_params *boot_params_p;
 #endif//_CTYPE_H_

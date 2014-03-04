@@ -9,6 +9,24 @@ inline u8 inb(u16 port){
 	asm volatile ( "inb	%1,%0":"=a"(value):"dN"(port));
 	return value;
 }
+inline u16 ds(void)
+{
+	u16 seg;
+	asm("movw %%ds,%0" : "=rm" (seg));
+	return seg;
+}
+inline u16 cs(void)
+{
+	u16 seg;
+	asm("movw %%cs,%0" : "=rm" (seg));
+	return seg;
+}
+inline void sti(){
+	asm volatile ("sti");
+}
+inline void cli(){
+	asm volatile ("cli");
+}
 #define GDT_ENTRY(flags,base,limit)
 #define IDT_ENTRY(flags,selecter,offset)	\
 	((((u64)offset) & 0x00000000ffff0000) << (48 - 16))	\
@@ -19,4 +37,5 @@ struct gdt_ptr {
 u16 len;
 u32 ptr;
 } __attribute__((packed));
+
 #endif//_ASM_H_
