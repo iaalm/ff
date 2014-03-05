@@ -40,31 +40,10 @@ void setup_idt(){
 	struct gdt_ptr ptr = {sizeof(idt),(u32)idt};
 	asm volatile("lidtl %0"::"m"(ptr));
 }
-/*
-void get_and_print_memory_inf(){
-	u32 mem_info[200],*len;
-	asm volatile(	"mov $0xeb20,%%ax\n"
-			"mov $0,%%ebx\n"
-			//"mov %0,%%di\n"
-			"mov $20,%%ecx\n"
-			"mov $0x534d4150,%%edx\n"
-			"loop:\n"
-			"int $0x15\n"
-			"add $20,%%edi\n"
-			"mov $0xeb20,%%ax\n"
-			"cmp $0,%%ebx\n"
-			"jne loop\n"
-			"mov di,%0"
-			://"=r"(mem_info)
-			:"r"(len)
-			:"%eax","%ebx","%ecx","%edx","memory");
-	putl_k(len-mem_info);
-}
-*/
 void kernel(){
 	setup_idt();
 	init_8259A();
-	//putl_k((u32)boot_params_p);
+	putl_k((u32)boot_params_p);
 	//asm volatile("int $0xff");
 	while(1);
 }

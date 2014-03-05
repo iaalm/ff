@@ -8,7 +8,7 @@ _start:
 	push	%eax
 	ret
 	.globl boot_params_p
-boot_params_p:	.long
+boot_params_p:	.long	0
 	.globl	p
 p:
 	mov	0xb87d0,%ax
