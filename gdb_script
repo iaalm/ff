@@ -1,0 +1,2 @@
+target remote | exec qemu-system-i386 -kernel img -gdb stdio
+#target remote | exec qemu-system-x86_64 -kernel img -gdb stdio
