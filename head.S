@@ -11,6 +11,7 @@ _start:
 boot_params_p:	.long	0
 	.globl	p
 p:
+	push	%ax
 	mov	0xb87d0,%ax
 	add	$1,%ah
 	mov	$'!',%al
@@ -18,6 +19,7 @@ p:
 	# send EOI
 	mov	$0x20,%al
 	out	%al,$0x20
+	pop	%ax
 
 	iret
 
