@@ -104,6 +104,7 @@ static int skip_atoi(const char **s)
 #define LEFT	16		/* left justified */
 #define SMALL	32		/* Must be 32 == 0x20 */
 #define SPECIAL	64		/* 0x */
+#define HUMAN	128		/*human readable*/
 
 #define do_div(n,base) ({ \
 int __res; \
@@ -116,14 +117,22 @@ static char *number(char *str, long num, int base, int size, int precision,
 {
 	/* we are called with base 8, 10 or 16, only, thus don't need "G..."  */
 	static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
+	static const char human_tab[] = "BKMGTP";
 
 	char tmp[66];
 	char c, sign, locase;
 	int i;
+	unsigned int human_level = 0;
 
 	/* locase = 0 or 0x20. ORing digits or letters with 'locase'
 	 * produces same digits or (maybe lowercased) letters */
 	locase = (type & SMALL);
+	if (type & HUMAN){
+		while(num > 1024){
+			num /= 1024;
+			human_level++;
+		}
+	}
 	if (type & LEFT)
 		type &= ~ZEROPAD;
 	if (base < 2 || base > 36)
@@ -150,6 +159,8 @@ static char *number(char *str, long num, int base, int size, int precision,
 			size--;
 	}
 	i = 0;
+	if (type & HUMAN)
+		tmp[i++] = human_tab[human_level];
 	if (num == 0)
 		tmp[i++] = '0';
 	else
@@ -328,7 +339,10 @@ int vsprintf_k(char *buf, const char *fmt, va_list args)
 			flags |= SIGN;
 		case 'u':
 			break;
-
+		case 'k':
+			base = 10;
+			flags |= HUMAN;
+			break;
 		default:
 			*str++ = '%';
 			if (*fmt)
