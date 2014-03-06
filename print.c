@@ -339,7 +339,7 @@ int vsprintf_k(char *buf, const char *fmt, va_list args)
 			flags |= SIGN;
 		case 'u':
 			break;
-		case 'k':
+		case 'H':
 			base = 10;
 			flags |= HUMAN;
 			break;

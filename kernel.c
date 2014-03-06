@@ -45,7 +45,7 @@ void print_mem_info(){
 	int i;
 	OFFSET(boot_params_p,0x2d0,mem);
 	do{
-			printf_k("%08x - %08x : %8k : %08x",*(mem+0),*(mem+0)+*(mem+2),*(mem+2),*(mem+4));
+			printf_k("%08x - %08x : %8H : %08x",*(mem+0),*(mem+0)+*(mem+2),*(mem+2),*(mem+4));
 		putc_k('\n');
 		mem += 5;
 	}while(*mem);
