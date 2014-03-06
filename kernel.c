@@ -40,10 +40,23 @@ void setup_idt(){
 	struct gdt_ptr ptr = {sizeof(idt),(u32)idt};
 	asm volatile("lidtl %0"::"m"(ptr));
 }
+void print_mem_info(){
+	u32* mem;
+	int i;
+	OFFSET(boot_params_p,0x2d0,mem);
+	do{
+			printf_k("%08x - %08x : %10d : %08x",*(mem+0),*(mem+0)+*(mem+2),*(mem+2),*(mem+4));
+		putc_k('\n');
+		mem += 5;
+	}while(*mem);
+}
 void kernel(){
 	setup_idt();
 	init_8259A();
+	clean_screen();
 	putl_k((u32)boot_params_p);
+	print_mem_info();
+
 	//asm volatile("int $0xff");
 	while(1);
 }

@@ -38,4 +38,5 @@ u16 len;
 u32 ptr;
 } __attribute__((packed));
 
+#define OFFSET(base,offset,target) asm volatile ("mov %1,%0\nadd %2,%0":"=r"(target):"r"(base),"r"(offset))
 #endif//_ASM_H_
