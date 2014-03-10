@@ -1,7 +1,7 @@
 TARGET_MACH=-m32
 TARGET_ARCH=-m32
 ASFLAGS=-g
-CFLAGS=-g
+CFLAGS=-g -fno-stack-protector
 OBJCOPY=objcopy
 all:kernel.bin
 run:img
