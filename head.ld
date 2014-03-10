@@ -14,4 +14,5 @@ SECTIONS
 	.stack		: {
 		_stack_buttun_ = (. + 4096);
 	}
+	_end_kernel = .;
 }

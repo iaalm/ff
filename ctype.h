@@ -12,6 +12,5 @@ typedef unsigned long long u64;
 typedef long long s64;
 typedef u32 size_t;
 struct boot_params;
-extern struct boot_params *boot_params_p;
 
 #endif//_CTYPE_H_

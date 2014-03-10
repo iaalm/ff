@@ -1,7 +1,7 @@
 #include "print.h"
 #define VIDEO_BUFF_BASE	(0xb8000)
 #define VIDEO_BUFF_END	(0xb8000 + 80 * 25 * 2)
-#define TXT_COLOUR (0x17<<8)
+#define TXT_COLOUR (0x1f<<8)
 
 static unsigned short* index = (unsigned short*)VIDEO_BUFF_BASE;
 
