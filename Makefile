@@ -15,9 +15,9 @@ tools/header_linker:tools/header_linker.c
 kernel.bin:kernel
 	$(OBJCOPY) -O binary $< $@
 
-kernel.o:kernel.c print.h asm.h mm.h
+kernel.o:kernel.c
 
-kernel:head.o kernel.o print.o mm.o asm.o
+kernel:head.o kernel.o print.o mm.o asm.o interrupt.o
 	$(LD) $^ -g -T head.ld -o $@ --Map=kernel.map
 
 clean:
