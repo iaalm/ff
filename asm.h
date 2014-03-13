@@ -23,7 +23,8 @@ extern inline void cli();
 	(((selecter) & 0x000000000000ffff) << 16)		| \
 	(((u64)offset) & 0x000000000000ffff))
 
-#define OFFSET(base,offset,target) asm volatile ("mov %1,%0\nadd %2,%0":"=r"(target):"r"(base),"r"(offset))
+#define OFFSET(base,offset,target) asm volatile ("mov %1,%0\nadd %2,%0":"=&r"(target):"r"(base),"r"(offset))
+//#define OFFSET(base,offset,target) target=(void*)(((u32)(base))+((u32)(offset)))
 
 struct gdt_ptr {
 u16 len;

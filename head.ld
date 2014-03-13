@@ -14,12 +14,9 @@ SECTIONS
 	}
 	.bss		: { *(.bss) }
 	.stack		: {
-		_stack_buttun_ = (. + 4096);
-	}
-	.pt		: {
-			. = (_stack_buttun_ + 4095) / 4096 * 4096;
-			pt = .;
-			. = pt + 4 * 1024 * 1024;
+		_stack_top_ = .;
+		_stack_buttun_ = (_stack_top_ + 4096);
+		. = _stack_buttun_;
 	}
 	_end_kernel = .;
 }

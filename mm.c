@@ -7,7 +7,7 @@ static u8 slab_index = 0;
 static u32* pt_k;
 
 inline void load_pt(void* pt){
-	asm volatile ("mov %0,%%cr3\nmov %%cr0,%0\nor 0x80000000,%0\nmov %0,%%cr0"::"r"(pt));
+	asm volatile ("mov %0,%%cr3\nmov %%cr0,%0\nor $0x80000000,%0\nmov %0,%%cr0"::"r"(pt));
 }
 void mm_init(){
 	int i,pde_count,pte_count;
@@ -17,8 +17,11 @@ void mm_init(){
 	pde_count = (pte_count + 1023) >> 10;
 	pde_count = (pde_count + pte_count + 1023) >> 10;
 	for(i = 0;i < pde_count;i++){
-		OFFSET(pte_count << 12,i << 12,pt_k[i]);
+		OFFSET(pte_count << 12,(i + 1) << 12,pt_k[i]);
 	}
+	while(i < 1024)
+		pt_k[i++] = 0;
+
 	for(i = 0;i < pte_count;i++){
 		pt_k[1024+i] = PTE(i);
 		page[i].used = 1;
@@ -29,6 +32,7 @@ void mm_init(){
 	for(i = pte_count;i < (pde_count << 10);i++)
 		pt_k[1024+i] = 0;
 
+	brk_k = pt_k + i;
 	load_pt(pt_k);
 
 	//idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)pf);       //test ok

@@ -28,6 +28,7 @@ void init_8259A(){
 	iodelay();
 	outb(0xa1,0xff);
 	iodelay();
+	idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)p);
 	sti();
 }
 void setup_idt(){
@@ -53,10 +54,10 @@ void print_mem_info(){
 
 void kernel(){
 	setup_idt();
-	init_8259A();
 	clean_screen();
 	print_mem_info();
 	mm_init();
+	init_8259A();
 	*(int*)0xf0000000 = 0;	//cause pf interrupt
 	//asm volatile("int $0xff");
 	while(1);
