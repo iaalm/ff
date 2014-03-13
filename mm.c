@@ -18,7 +18,6 @@ void mm_init(){
 	pde_count = (pde_count + pte_count + 1023) >> 10;
 	for(i = 0;i < pde_count;i++){
 		pt_k[i] = PTE(pte_count+i+1);
-		//OFFSET(pte_count << 12,(i + 1) << 12,pt_k[i]);
 	}
 	while(i < 1024)
 		pt_k[i++] = 0;
