@@ -15,7 +15,9 @@ void mm_init(){
 	pte_count >>= 12;
 	pt_k =(u32*)(pte_count << 12);
 	pde_count = (pte_count + 1023) >> 10;
-	pde_count = (pde_count + pte_count + 1023) >> 10;
+	//pde_count = (pte_count + 1023) >> 10;
+	//pte_count += 1 + pde_count;
+	//pde_count = (pde_count + pte_count + 1023) >> 10;
 	for(i = 0;i < pde_count;i++){
 		pt_k[i] = PTE(pte_count+i+1);
 	}
@@ -26,13 +28,15 @@ void mm_init(){
 		pt_k[1024+i] = PTE(i);
 		page[i].used = 1;
 	}
-	while(i < (PAGE_MAX))
+	while(i < pde_count + pte_count + 1)
+		page[i++].used = 1;
+
+	while(i < PAGE_MAX)
 		page[i++].used = -1;
 
 	for(i = pte_count;i < (pde_count << 10);i++)
 		pt_k[1024+i] = 0;
 
-	brk_k = pt_k + i;
 	load_pt(pt_k);
 
 	//idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)pf);       //test ok
@@ -87,4 +91,11 @@ int page_free(s32 pgid){
 void* malloc_k(size_t size){
 }
 int free_k(void* ptr){
+}
+
+void do_page_fault(u32 addr){
+	if(!(pt_k[addr >> 22] & 1)){	//check pde
+		pt_k[addr >> 22] = PTE(page_alloc());
+	}
+	((u32*)(pt_k[addr>>22] & 0xfffff000))[(addr>>12)&0x3ff] = PTE(page_alloc());
 }

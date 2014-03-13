@@ -14,12 +14,24 @@ p:
 	
 	.globl	pf
 pf:
-	push	%ax
+	push	%eax
 	mov	0x70,%ah
 	mov	$'P',%al
 	mov	%ax,0xb87d4
-	
-	pop	%ax
+
+	mov	%cr0,%eax
+	and	$0x7fffffff,%eax
+	mov	%eax,%cr0
+	mov	%cr2,%eax
+	push	%eax
+	call	do_page_fault
+	pop	%eax
+	mov	%cr0,%eax
+	or	$0x80000000,%eax
+	mov	%eax,%cr0
+
+	pop	%eax
+	pop	%eax	#clean stack why?
 	iret
 	.globl udef_fun
 udef_fun:
