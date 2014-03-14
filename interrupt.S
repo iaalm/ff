@@ -14,6 +14,7 @@ p:
 	
 	.globl	pf
 pf:
+	add	$4,%esp		//ignore the error code
 	push	%eax
 	mov	0x70,%ah
 	mov	$'P',%al
@@ -31,7 +32,6 @@ pf:
 	mov	%eax,%cr0
 
 	pop	%eax
-	pop	%eax	#clean stack why?
 	iret
 	.globl udef_fun
 udef_fun:

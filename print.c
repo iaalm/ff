@@ -52,6 +52,7 @@ void putl_k(int value){
 	puts_k(buff);
 }
 //from string.x of linux source code
+#define isdigit(c) ((c)>='0'&&(c)<='9')
 
 int strcmp(const char *str1, const char *str2)
 {

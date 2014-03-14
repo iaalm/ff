@@ -41,24 +41,20 @@ void setup_idt(){
 	struct gdt_ptr ptr = {sizeof(idt),(u32)idt};
 	asm volatile("lidtl %0"::"m"(ptr));
 }
-void print_mem_info(){
-	u32* mem;
-	int i;
-	mem = (void*)boot_params_p + 0x2d0;
-	do{
-			printf_k("%08x - %08x : %8H : %08x",*(mem+0),*(mem+0)+*(mem+2),*(mem+2),*(mem+4));
-		putc_k('\n');
-		mem += 5;
-	}while(*mem);
-}
 
 void kernel(){
 	setup_idt();
 	clean_screen();
-	print_mem_info();
 	mm_init();
 	init_8259A();
-	*(int*)0xf0000000 = 0;	//cause pf interrupt
+	int id = slab_init(4,4);
+	void *p;
+	putl_k((u32)slab_alloc(id));
+	putl_k((u32)(p = malloc_k(1234)));
+	putl_k((u32)free_k(p));
+	putl_k((u32)(p = malloc_k(1234)));
+	putl_k((u32)free_k(p));
+	//*(int*)0xf0000000 = 0;	//cause pf interrupt
 	//asm volatile("int $0xff");
 	while(1);
 }
