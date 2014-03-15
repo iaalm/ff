@@ -52,7 +52,7 @@ void kernel(){
 	putl_k((u32)slab_alloc(id));
 	putl_k((u32)(p = malloc_k(1234)));
 	putl_k((u32)free_k(p));
-	putl_k((u32)(p = malloc_k(1234)));
+	putl_k((u32)(p = malloc_k(1235)));
 	putl_k((u32)free_k(p));
 	//*(int*)0xf0000000 = 0;	//cause pf interrupt
 	//asm volatile("int $0xff");

@@ -126,6 +126,10 @@ int do_free(void* ptr,struct malloc_tab_t* head){
 	ptr -= sizeof(void*);
 	struct malloc_tab_t *idx,*oidx=head;
 	//merge
+	if(ptr+((struct malloc_tab_t *)ptr)->size == (void*)head->size){
+		head->size = (u32)ptr;
+		return 0;
+	}
 	for(idx = head->nxt;idx != NULL;oidx = idx,idx = idx -> nxt){
 		if((void*)idx + idx->size == ptr || ptr+((struct malloc_tab_t*)ptr)->size == idx){
 			((struct malloc_tab_t*)ptr)->size += idx->size;
