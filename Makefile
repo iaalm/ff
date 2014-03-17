@@ -3,6 +3,7 @@ TARGET_ARCH=-m32
 ASFLAGS=-g
 CFLAGS=-g -Wall -fno-stack-protector 
 OBJCOPY=objcopy
+OBJS=head.o kernel.o print.o mm.o asm.o interrupt.o
 all:kernel.bin
 run:img
 	qemu-kvm -kernel img
@@ -15,10 +16,8 @@ tools/header_linker:tools/header_linker.c
 kernel.bin:kernel
 	$(OBJCOPY) -O binary $< $@
 
-kernel.o:kernel.c
-
-kernel:head.o kernel.o print.o mm.o asm.o interrupt.o
-	$(LD) $^ -g -T head.ld -o $@ --Map=kernel.map
+kernel:$(OBJS) head.ld
+	$(LD) $(OBJS) -g -T head.ld -o $@ --Map=kernel.map
 
 clean:
 	rm -rf img kernel.bin kernel *.o tools/header_linker kernel.map
