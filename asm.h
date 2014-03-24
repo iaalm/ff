@@ -9,12 +9,11 @@ extern inline void sti();
 extern inline void cli();
 
 #define GDT_ENTRY(flags,base,limit)		\
-		(((((u64)base) & 0xffff) << 48)			| \
-		((((u64)limit) & 0xffff)<< 32)			| \
-		((base) & 0xff000000)	 			| \
-		(((flags) & 0xf0ff) << 8)			| \
-		((limit) & 0xf0000)				| \
-		(((base) & 0xff0000) >> 16))
+	(((((u64)base)  & 0xff000000) << (56-24)) | \
+        ((((u64)flags) & 0x0000f0ff) << 40) |      \
+        ((((u64)limit) & 0x000f0000) << (48-16)) | \
+        ((((u64)base)  & 0x00ffffff) << 16) |      \
+        ((((u64)limit) & 0x0000ffff)))
 
 
 #define IDT_ENTRY(flags,selecter,offset)	\
@@ -39,6 +38,8 @@ struct pde_t{
 
 } __attribute__((packed));
 
+extern void init_process();
+extern void* tss;
 extern struct boot_params_t *boot_params_p;
 extern void *_end_kernel;
 #endif//_ASM_H_

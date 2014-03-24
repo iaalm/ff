@@ -37,7 +37,7 @@ void setup_gdt(){
 	gdt[1] = GDT_ENTRY(0x0089, (u32)&tss, 103);
 	gdt[2] = GDT_ENTRY(0xc09a, 0, 0xfffff);
 	gdt[3] = GDT_ENTRY(0xc092, 0, 0xfffff);
-	gdt[4] = GDT_ENTRY(0xc09a, 0, 0xfffff);
+	gdt[4] = GDT_ENTRY(0xc0fa, 0, 0xfffff);
 	gdt[5] = GDT_ENTRY(0xc0f2, 0, 0xfffff);
 
 	struct gdt_ptr ptr = {sizeof(gdt),(u32)gdt};
@@ -68,6 +68,6 @@ void kernel(){
 }
 
 void process(){
-	printf_k("a");
+	printf_k("3");
 	while(1);
 }

@@ -13,11 +13,12 @@ init_process:
 	mov	%ss,0x8(%eax)
 	mov	%esp,0x4(%eax)
 	//mov	%ax,%cs
+	mov	$0,%eax
 	mov	$0x2b,%ax	//actually ring3 need its own stack
-	push	%ax
+	push	%eax
 	push	%esp
-	mov	$0x20,%ax
-	push	%ax
+	mov	$0x23,%ax
+	push	%eax
 	push	$process
 	lret
 
