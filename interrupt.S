@@ -1,6 +1,7 @@
 	.globl	timer_irq
 timer_irq:
-	//store
+		sub	$32,%esp	//del it!!
+//store
 	pushal
 	push	%ds
 	push	%es
@@ -21,6 +22,8 @@ timer_irq:
 	pop	%es
 	pop	%ds
 	popal
+	add	$32,%esp	//del it!!
+
 	iret
 	.globl	p
 p:

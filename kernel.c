@@ -3,6 +3,7 @@
 #include "print.h"
 #include "ctype.h"
 #include "mm.h"
+#include "sche.h"
 u64 gdt[6];
 u64 idt[256];
 inline void iodelay(){
@@ -29,8 +30,8 @@ void init_8259A(){
 	iodelay();
 	outb(0xa1,0xff);
 	iodelay();
-	//idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)timer_irq);
-	idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)p);
+	idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)timer_irq);
+	//idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)p);
 }
 void setup_gdt(){
 	gdt[0] = GDT_ENTRY(0x0000, 0, 0x00000);
@@ -68,6 +69,16 @@ void kernel(){
 }
 
 void process(){
-	printf_k("3");
-	while(1);
+	int i;
+	char *str;
+	if(fork() == 0)
+		str = "1";
+	else
+		str = "2";
+	while(1){
+		printf_k(str);
+		for(i = 0;i < 5000000;i++)
+			asm ("nop");
+	}
 }
+
