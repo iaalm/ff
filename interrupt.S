@@ -1,3 +1,27 @@
+	.globl	timer_irq
+timer_irq:
+	//store
+	pushal
+	push	%ds
+	push	%es
+	push	%fs
+	push	%gs
+	movl	%esp,%esi
+	movl	$current,%edi
+	movl	$12,%ecx
+	rep;	movsb
+	call	nxt_proc
+	//restore
+	movl	%esp,%edi
+	movl	$current,%esi
+	movl	$12,%ecx
+	rep;	movsb
+	pop	%gs
+	pop	%fs
+	pop	%es
+	pop	%ds
+	popal
+	iret
 	.globl	p
 p:
 	push	%ax
@@ -33,6 +57,28 @@ pf:
 
 	pop	%eax
 	iret
+	.globl gp
+gp:
+	push	%ax
+	mov	0xb87f2,%ax
+	add	$1,%ah
+	mov	$'G',%al
+	mov	%ax,0xb87f2
+	pop	%ax
+
+	iret
+
+	.globl df
+df:
+	push	%ax
+	mov	0xb87f4,%ax
+	add	$1,%ah
+	mov	$'D',%al
+	mov	%ax,0xb87f4
+	pop	%ax
+
+	iret
+
 	.globl udef_fun
 udef_fun:
 	push	%ax
@@ -43,3 +89,4 @@ udef_fun:
 	pop	%ax
 
 	iret
+
