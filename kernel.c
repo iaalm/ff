@@ -29,8 +29,8 @@ void init_8259A(){
 	iodelay();
 	outb(0xa1,0xff);
 	iodelay();
-	idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)timer_irq);
-	//idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)p);
+	//idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)timer_irq);
+	idt[TIMER] = IDT_ENTRY(0x8e00,cs(),(u32)p);
 }
 void setup_gdt(){
 	gdt[0] = GDT_ENTRY(0x0000, 0, 0x00000);
@@ -62,8 +62,8 @@ void kernel(){
 	setup_idt();
 	clean_screen();
 	mm_init();
-	//init_8259A();
-	//sti();
+	init_8259A();
+	sti();
 	init_process();
 }
 

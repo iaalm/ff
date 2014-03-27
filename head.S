@@ -12,6 +12,8 @@ init_process:
 	mov	$tss,%eax
 	mov	%ss,0x8(%eax)
 	mov	%esp,0x4(%eax)
+	mov	$0x08,%ax
+	ltr	%ax
 	//mov	%ax,%cs
 	mov	$0,%eax
 	mov	$0x2b,%ax	//actually ring3 need its own stack

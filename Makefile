@@ -6,7 +6,7 @@ OBJCOPY=objcopy
 OBJS=head.o kernel.o print.o mm.o asm.o interrupt.o sche.o
 all:kernel.bin
 run:img
-	qemu-kvm -kernel img
+	qemu-system-i386 -kernel img
 debug:img
 	gdb -x gdb_script kernel
 img:kernel.bin tools/header_linker tools/head
