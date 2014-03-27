@@ -11,7 +11,7 @@ void init_sche(){
 	current->nxt = current->pre = current;
 }
 int fork(){
-	asm violate ("mov $0x01,%%eax\nint 0x93");
+	return 0;
 }
 void nxt_proc(){
 	return ;
