@@ -58,27 +58,38 @@ void setup_idt(){
 }
 
 void kernel(){
-	cli();
 	setup_gdt();
 	setup_idt();
 	clean_screen();
 	mm_init();
+	init_sche();
 	init_8259A();
-	sti();
+	init_2process();
 	init_process();
 }
 
 void process(){
 	int i;
-	char *str;
-	if(fork() == 0)
-		str = "1";
-	else
-		str = "2";
 	while(1){
-		printf_k(str);
+		printf_k("1");
 		for(i = 0;i < 5000000;i++)
 			asm ("nop");
+	}
+}
+
+void process_2(){
+	int i;
+	while(1){
+		printf_k("2");
+		for(i = 0;i < 5000000;i++)
+			asm ("nop");
+	}
+}
+void init_2process(){
+	u32* i= 0x10000000;
+	while(i <= 0x10010000){
+		*i = 0;
+		i++;
 	}
 }
 

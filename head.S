@@ -7,6 +7,13 @@ _start:
 	mov	$kernel, %eax
 	push	%eax
 	ret	
+r3:
+	mov	%ss,%ax
+	mov	%ax,%ds
+	mov	%ax,%es
+	mov	%ax,%fs
+	mov	%ax,%gs
+	call	process
 	.globl	init_process
 init_process:
 	mov	$tss,%eax
@@ -18,12 +25,12 @@ init_process:
 	mov	$0,%eax
 	mov	$0x2b,%ax	//actually ring3 need its own stack
 	push	%eax
-	push	%esp
+	push	$0x10010000
 	mov	$0x23,%ax
 	push	%eax
-	push	$process
+	push	$r3
+	sti
 	lret
-
 	.globl boot_params_p
 boot_params_p:	.long	0
 	.globl	tss

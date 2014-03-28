@@ -1,28 +1,48 @@
 	.globl	timer_irq
 timer_irq:
-		sub	$32,%esp	//del it!!
-//store
-	pushal
+	//store no use pushal for esp
+	push	%eax
+	push	%ecx
+	push	%edx
+	push	%ebx
+	push	%ebp
+	push	%esi
+	push	%edi
 	push	%ds
 	push	%es
 	push	%fs
 	push	%gs
 	movl	%esp,%esi
-	movl	$current,%edi
-	movl	$12,%ecx
-	rep;	movsb
+	movl	current,%edi
+	movl	$16,%ecx
+	rep;	movsd
 	call	nxt_proc
 	//restore
 	movl	%esp,%edi
-	movl	$current,%esi
-	movl	$12,%ecx
-	rep;	movsb
+	movl	current,%esi
+	movl	$16,%ecx
+	rep;	movsd
 	pop	%gs
 	pop	%fs
 	pop	%es
 	pop	%ds
-	popal
-	add	$32,%esp	//del it!!
+	pop	%edi
+	pop	%esi
+	pop	%ebp
+	pop	%ebx
+	pop	%edx
+	pop	%ecx
+	pop	%eax
+
+	push	%ax
+	mov	0xb87d0,%ax
+	add	$1,%ah
+	mov	$'!',%al
+	mov	%ax,0xb87d0
+	# send EOI
+	mov	$0x20,%al
+	out	%al,$0x20
+	pop	%ax
 
 	iret
 	.globl	p
