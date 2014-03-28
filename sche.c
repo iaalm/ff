@@ -16,7 +16,7 @@ void init_sche(){
 	current->nxt->regs[3] = 0x2b;
 	current->nxt->regs[11] = process_2;	//eip
 	current->nxt->regs[12] = 0x23;		//cs
-	current->nxt->regs[13] = 695;		//eflags
+	current->nxt->regs[13] = (1<<9);		//eflags
 	current->nxt->regs[14] = 0x10008000;	//esp
 	current->nxt->regs[15] = 0x2b;		//ss
 }
