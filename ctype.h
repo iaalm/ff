@@ -13,4 +13,18 @@ typedef long long s64;
 typedef u32 size_t;
 struct boot_params;
 
+#define LKLIST_ADD(pos,item) do{		\
+	(item)->nxt = (pos)->nxt;	\
+	(item)->pre = (pos);		\
+	(pos)->nxt->pre = (item);	\
+	(pos)->nxt = (item);		\
+}while(0)
+
+#define LKLIST_DEL(pos) do{			\
+	(pos)->pre->nxt = (pos)->nxt;	\
+	(pos)->nxt->pre	= (pos)->pre;	\
+}while(0)
+
+#define LKLIST_FOREACH(head,i) for(i = (head);i->nxt != (head) && i != NULL;i = i->nxt) 
+
 #endif//_CTYPE_H_

@@ -3,6 +3,7 @@
 #include "print.h"
 #include "ctype.h"
 #include "mm.h"
+#include "timer.h"
 #include "sche.h"
 u64 gdt[6];
 u64 idt[256];
@@ -57,16 +58,23 @@ void setup_idt(){
 	asm volatile("lidtl %0"::"m"(ptr));
 }
 
+void timer(){
+	puts_k("!!!");
+	putl_k(get_tc() & 0xffffffff);
+}
 void kernel(){
 	setup_gdt();
 	setup_idt();
 	clean_screen();
-	mm_init();
+	init_timer();
+	add_timer(timer,10);
+	init_mm();
 	init_sche();
 	init_8259A();
 	init_2process();
 	init_process();
 }
+
 
 void process(){
 	int i;

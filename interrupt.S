@@ -16,6 +16,7 @@ timer_irq:
 	movl	current,%edi
 	movl	$16,%ecx
 	rep;	movsd
+	call	do_timer
 	call	nxt_proc
 	//restore
 	movl	%esp,%edi

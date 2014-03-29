@@ -20,7 +20,7 @@ struct malloc_tab_t{
 	size_t size;
 	struct malloc_tab_t* nxt;
 };
-extern void mm_init();
+extern void init_mm();
 extern inline void load_pt(void*);
 extern int slab_init(u16,u16);
 extern void* slab_alloc(u8);

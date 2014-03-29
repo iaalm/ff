@@ -3,7 +3,7 @@ TARGET_ARCH=-m32
 ASFLAGS=-g
 CFLAGS=-g -Wall -fno-stack-protector 
 OBJCOPY=objcopy
-OBJS=head.o kernel.o print.o mm.o asm.o interrupt.o sche.o
+OBJS=head.o kernel.o print.o mm.o asm.o interrupt.o sche.o timer.o
 all:kernel.bin
 run:img
 	qemu-system-i386 -kernel img

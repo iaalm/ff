@@ -25,7 +25,7 @@ void mark_unavail_mem(){
 	}while(*mem);
 }
 
-void mm_init(){
+void init_mm(){
 	int i,pde_count,pte_count;
 	OFFSET(&_end_kernel,0xfff,pte_count);
 	pte_count >>= 12;
